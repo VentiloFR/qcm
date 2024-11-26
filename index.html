@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QCM Interactif</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f9;
+        }
+        .container {
+            width: 90%;
+            max-width: 600px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .logo {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 50px;
+        }
+        h1 {
+            color: #333;
+        }
+        .question {
+            margin: 15px 0;
+            text-align: left;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .options label {
+            margin: 8px 0;
+            cursor: pointer;
+        }
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <img class="logo" src="https://via.placeholder.com/50" alt="Logo">
+        <h1>QCM Interactif</h1>
+        <form id="qcmForm">
+            <div class="question">
+                <p>1. Quelle est la capitale de la France ?</p>
+                <div class="options">
+                    <label><input type="radio" name="q1" value="Paris"> Paris</label>
+                    <label><input type="radio" name="q1" value="Londres"> Londres</label>
+                    <label><input type="radio" name="q1" value="Madrid"> Madrid</label>
+                </div>
+            </div>
+            <div class="question">
+                <p>2. Combien fait 2 + 2 ?</p>
+                <div class="options">
+                    <label><input type="radio" name="q2" value="3"> 3</label>
+                    <label><input type="radio" name="q2" value="4"> 4</label>
+                    <label><input type="radio" name="q2" value="5"> 5</label>
+                </div>
+            </div>
+            <div class="question">
+                <p>3. Quelle est la couleur du ciel ?</p>
+                <div class="options">
+                    <label><input type="radio" name="q3" value="Bleu"> Bleu</label>
+                    <label><input type="radio" name="q3" value="Rouge"> Rouge</label>
+                    <label><input type="radio" name="q3" value="Vert"> Vert</label>
+                </div>
+            </div>
+            <button type="button" class="button" onclick="calculateScore()">Voir le résultat</button>
+        </form>
+
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        function calculateScore() {
+            var score = 0;
+            var totalQuestions = 3;
+
+            // Correct answers
+            var answers = {
+                q1: "Paris",
+                q2: "4",
+                q3: "Bleu"
+            };
+
+            // Get form values
+            var form = document.getElementById('qcmForm');
+            var formData = new FormData(form);
+
+            // Check answers
+            for (var i = 1; i <= totalQuestions; i++) {
+                var question = "q" + i;
+                var answer = formData.get(question);
+
+                if (answer === answers[question]) {
+                    score++;
+                }
+            }
+
+            // Display result
+            var resultText = `Votre score : ${score}/${totalQuestions}`;
+            document.getElementById('result').innerHTML = resultText;
+        }
+    </script>
+
+</body>
+</html>

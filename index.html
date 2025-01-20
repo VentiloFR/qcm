@@ -12,7 +12,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100hv;
+            height: 100vh;
             background-color: #f4f4f9;
         }
         .container {
@@ -30,9 +30,7 @@
             top: 10px;
             left: 10px;
             width: 50px;
-            width: 100px;
-            height: auto; /* Conserve les proportions de l'image */
-
+            height: auto;
         }
         h1 {
             color: #333;
@@ -67,6 +65,14 @@
             margin-top: 20px;
             font-size: 18px;
             color: #333;
+        }
+        .correct {
+            color: green;
+            font-weight: bold;
+        }
+        .incorrect {
+            color: red;
+            text-decoration: line-through;
         }
     </style>
 </head>
@@ -112,7 +118,7 @@
                 <p>5. Dans quel secteur se trouve la métallerie ?</p>
                 <div class="options">
                     <label><input type="radio" name="q5" value="la restauration"> la restauration</label>
-                    <label><input type="radio" name="q5" value="dans des bureaux "> dans des bureaux </label>
+                    <label><input type="radio" name="q5" value="dans des bureaux"> dans des bureaux</label>
                     <label><input type="radio" name="q5" value="dans le BTP"> dans le BTP</label>
                 </div>
             </div>
@@ -137,19 +143,15 @@
                     <label><input type="radio" name="q8" value="la productivité"> la productivité</label>
                 </div>
             </div>
-            <button type="button" class="button" onclick="calculateScore()">Voir le résultat</button>
+            <button type="button" class="button" onclick="checkAnswers()">Voir le résultat</button>
         </form>
 
         <div id="result" class="result"></div>
     </div>
 
     <script>
-        function calculateScore() {
-            var score = 0;
-            var totalQuestions = 8;
-
-            // Correct answers
-            var answers = {
+        function checkAnswers() {
+            const correctAnswers = {
                 q1: "des structures métalliques de mise en sécurité",
                 q2: "20ème",
                 q3: "artistiquement",
@@ -158,26 +160,24 @@
                 q6: "oui",
                 q7: "des matériaux recyclés",
                 q8: "la productivité",
-
             };
 
-            // Get form values
-            var form = document.getElementById('qcmForm');
-            var formData = new FormData(form);
+            const form = document.getElementById('qcmForm');
+            const formData = new FormData(form);
 
-            // Check answers
-            for (var i = 1; i <= totalQuestions; i++) {
-                var question = "q" + i;
-                var answer = formData.get(question);
+            for (const [question, correctAnswer] of Object.entries(correctAnswers)) {
+                const selected = formData.get(question);
+                const inputs = form.querySelectorAll(`[name="${question}"]`);
 
-                if (answer === answers[question]) {
-                    score++;
-                }
+                inputs.forEach(input => {
+                    const label = input.parentElement;
+                    if (input.value === correctAnswer) {
+                        label.classList.add('correct');
+                    } else if (input.value === selected) {
+                        label.classList.add('incorrect');
+                    }
+                });
             }
-
-            // Display result
-            var resultText = `Votre score : ${score}/${totalQuestions}`;
-            document.getElementById('result').innerHTML = resultText;
         }
     </script>
 

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QCM Métallerie</title>
-	<link rel="icon" href="logo.png" type="image/png">
+    <link rel="icon" href="logo.png" type="image/png">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -47,6 +47,12 @@
         .options label {
             margin: 8px 0;
             cursor: pointer;
+        }
+        .additional-text {
+            display: none;
+            color: blue;
+            margin-top: 8px;
+            font-style: italic;
         }
         .button {
             background-color: #4CAF50;
@@ -115,7 +121,7 @@
                 </div>
             </div>
             <div class="question">
-                <p>5. Dans quel secteur se trouve la métallerie ?</p>
+                 <p>5. Dans quel secteur se trouve la métallerie ?</p>
                 <div class="options">
                     <label><input type="radio" name="q5" value="la restauration"> dans la restauration</label>
                     <label><input type="radio" name="q5" value="dans des bureaux"> dans les bureaux</label>
@@ -123,9 +129,10 @@
                 </div>
             </div>
             <div class="question">
-                <p>6. Est-ce que j'ai une perspective d'évolution avec un cap métallier ?</p>
+                <p>6. Est-ce que j'ai une perspective d'évolution avec un CAP métallier ?</p>
                 <div class="options">
                     <label><input type="radio" name="q6" value="oui"> oui</label>
+                    <div class="additional-text" id="additional-text-q6">Oui avec un CAP tu peux t'orienter vers un bureau d'étude, l'architecture, devenir chef d'équipe, chef d'atelier ou expert pour les assurances et être à la tête d'une grande entreprise</div>
                     <label><input type="radio" name="q6" value="non"> non</label>
                 </div>
             </div>
@@ -137,7 +144,7 @@
                 </div>
             </div>
             <div class="question">
-                <p>8. L'impact de l'évolution du métier sera sur :</p>
+                <p>8. L'impact de l'évolution du métier sera plutôt sur :</p>
                 <div class="options">
                     <label><input type="radio" name="q8" value="le savoir-faire"> le savoir-faire</label>
                     <label><input type="radio" name="q8" value="la productivité"> la productivité</label>
@@ -156,7 +163,7 @@
                 q2: "20ème",
                 q3: "artistiquement",
                 q4: "avec des outils manuels et des machines spécialisées",
-                q5: "dans le BTP et l'industrie ",
+                q5: "dans le BTP et l'industrie",
                 q6: "oui",
                 q7: "des matériaux recyclés",
                 q8: "la productivité",
@@ -164,6 +171,8 @@
 
             const form = document.getElementById('qcmForm');
             const formData = new FormData(form);
+            let score = 0;
+            let totalQuestions = Object.keys(correctAnswers).length;
 
             for (const [question, correctAnswer] of Object.entries(correctAnswers)) {
                 const selected = formData.get(question);
@@ -173,14 +182,24 @@
                     const label = input.parentElement;
                     if (input.value === correctAnswer) {
                         label.classList.add('correct');
+                        if (input.checked) score++;
                     } else if (input.checked) {
                         label.classList.add('incorrect');
                     }
                 });
+
+                // Show additional text for question 6 if "oui" is selected
+                if (question === "q6" && correctAnswer === "oui") {
+                    const additionalText = document.getElementById("additional-text-q6");
+                    additionalText.style.display = "block";
+                }
             }
 
             const resultDiv = document.getElementById('result');
-            resultDiv.textContent = "Correction terminée. Vérifiez les réponses marquées.";
+            resultDiv.textContent = `Votre score : ${score}/${totalQuestions}. Vérifiez les réponses marquées.`;
+
+            // Scroll to the top of the page
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     </script>
 
